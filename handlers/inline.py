@@ -10,7 +10,7 @@ from aiogram.types import (
 
 from config import P1_NAME, P2_NAME, P1_KEY, P2_KEY
 from storage import load_data
-from texts import generate_text, generate_places_text
+from texts import generate_text, generate_places_text, generate_zoo_text
 from keyboards import get_keyboard, get_places_filter_keyboard
 
 router = Router()
@@ -58,7 +58,7 @@ async def inline_handler(query: InlineQuery):
     else:
         results.append(
             InlineQueryResultArticle(
-                id="main_score",
+                id="main_score_v2",
                 title="Показать текущий счёт",
                 description=f"{P1_NAME}: {data[P1_KEY]['score']} | {P2_NAME}: {data[P2_KEY]['score']}",
                 input_message_content=InputTextMessageContent(
@@ -66,6 +66,33 @@ async def inline_handler(query: InlineQuery):
                     parse_mode="Markdown",
                 ),
                 reply_markup=get_keyboard(),
+            )
+        )
+
+        question_kb = InlineKeyboardMarkup(
+            inline_keyboard=[
+                [
+                    InlineKeyboardButton(
+                        text="💬 Вопрос для разговора",
+                        callback_data="chat_question",
+                    )
+                ]
+            ]
+        )
+
+        results.append(
+            InlineQueryResultArticle(
+                id="chat_question_entry_v1",
+                title="Вопрос для разговора",
+                description="Сгенерировать тёплый вопрос для чата",
+                input_message_content=InputTextMessageContent(
+                    message_text=(
+                        "Нажми кнопку ниже, чтобы сгенерировать один тёплый вопрос "
+                        "для вашего разговора."
+                    ),
+                    parse_mode="Markdown",
+                ),
+                reply_markup=question_kb,
             )
         )
 
@@ -89,6 +116,22 @@ async def inline_handler(query: InlineQuery):
                     parse_mode="Markdown",
                 ),
                 reply_markup=get_places_filter_keyboard("unvisited"),
+            )
+        )
+
+        # Полный список зоопарка
+        data_zoo = load_data()
+        zoo_text = generate_zoo_text(data_zoo)
+
+        results.append(
+            InlineQueryResultArticle(
+                id="zoo_list",
+                title="Зоопарк желаний",
+                description="Все животные из вашего зоопарка",
+                input_message_content=InputTextMessageContent(
+                    message_text=zoo_text,
+                    parse_mode="Markdown",
+                ),
             )
         )
 

@@ -8,6 +8,7 @@ load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 DATA_FILE = "score_data.json"
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 P1_NAME = "Никита"
 P1_KEY = "nikita"

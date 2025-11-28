@@ -10,6 +10,7 @@ def load_data():
             P1_KEY: {"score": 0, "wishes": 0},
             P2_KEY: {"score": 0, "wishes": 0},
             "places": [],
+            "zoo": [],
         }
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -19,10 +20,14 @@ def load_data():
             P1_KEY: {"score": 0, "wishes": 0},
             P2_KEY: {"score": 0, "wishes": 0},
             "places": [],
+            "zoo": [],
         }
 
     if "places" not in data or not isinstance(data["places"], list):
         data["places"] = []
+
+    if "zoo" not in data or not isinstance(data["zoo"], list):
+        data["zoo"] = []
 
     return data
 

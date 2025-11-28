@@ -21,3 +21,4 @@ venv/
 # Logs
 *.log
 project_dump.md
+score_data.json

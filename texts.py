@@ -47,3 +47,21 @@ def generate_places_text(data) -> str:
         lines.append(f"{idx}. {status_emoji} {title}{author_suffix}{mood}")
 
     return "\n".join(lines)
+
+
+def generate_zoo_text(data) -> str:
+    zoo = data.get("zoo", [])
+
+    if not zoo:
+        return (
+            f"{EMOJI_HEART} **Зоопарк желаний** {EMOJI_HEART}\n\n"
+            f"🐾 Здесь пока пусто. Добавьте первых милых зверей! ✨"
+        )
+
+    lines = [f"{EMOJI_HEART} **Зоопарк желаний** {EMOJI_HEART}", ""]
+
+    for idx, animal in enumerate(zoo, start=1):
+        title = animal.get("title", "Без названия")
+        lines.append(f"{idx}. 🐾 {title}")
+
+    return "\n".join(lines)

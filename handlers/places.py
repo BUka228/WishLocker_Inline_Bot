@@ -3,7 +3,12 @@ from aiogram.types import Message, CallbackQuery
 
 from storage import load_data, save_data
 from texts import generate_places_text
-from keyboards import get_places_keyboard, get_main_menu, get_places_filter_keyboard
+from keyboards import (
+    get_places_keyboard,
+    get_main_menu,
+    get_places_filter_keyboard,
+    get_root_menu,
+)
 
 
 router = Router()
@@ -16,7 +21,7 @@ user_states: dict[int, dict] = {}
 async def cmd_start(message: Message):
     await message.answer(
         "Привет! Здесь вы можете вести список мест для желаний.",
-        reply_markup=get_main_menu(),
+        reply_markup=get_root_menu(),
     )
 
 
@@ -26,6 +31,12 @@ async def menu_places(message: Message):
     text = generate_places_text(data)
     kb = get_places_keyboard(data)
     await message.answer(text, reply_markup=kb, parse_mode="Markdown")
+    await message.answer("Меню по местам", reply_markup=get_main_menu())
+
+
+@router.message(F.text == "⬅️ В главное меню")
+async def back_to_root_menu(message: Message):
+    await message.answer("Главное меню", reply_markup=get_root_menu())
 
 
 @router.message(F.text == "🔍 Непосещённые")
@@ -206,7 +217,20 @@ async def places_filter_visited(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.message()
+@router.message(
+    ~F.text.in_(
+        [
+            "📋 Места",
+            "➕ Добавить место",
+            "🔍 Непосещённые",
+            "✨ Посещённые",
+            "🦁 Зоопарк",
+            "📋 Животные",
+            "➕ Добавить животное",
+            "⬅️ В главное меню",
+        ]
+    )
+)
 async def handle_place_states(message: Message):
     if not message.from_user:
         return

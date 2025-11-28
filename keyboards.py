@@ -33,6 +33,46 @@ def get_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=kb)
 
 
+def get_zoo_keyboard(data) -> InlineKeyboardMarkup:
+    animals = data.get("zoo", [])
+
+    if not animals:
+        return InlineKeyboardMarkup(inline_keyboard=[])
+
+    rows = []
+    for animal in animals:
+        animal_id = animal.get("id")
+        title = animal.get("title", "Без названия")
+
+        rows.append(
+            [
+                InlineKeyboardButton(
+                    text=f"🐾 {title}",
+                    callback_data=f"zoo_edit_{animal_id}",
+                ),
+                InlineKeyboardButton(
+                    text="✖",
+                    callback_data=f"zoo_delete_{animal_id}",
+                ),
+            ]
+        )
+
+    return InlineKeyboardMarkup(inline_keyboard=rows)
+
+
+def get_zoo_menu() -> ReplyKeyboardMarkup:
+    kb = [
+        [
+            KeyboardButton(text="📋 Животные"),
+            KeyboardButton(text="➕ Добавить животное"),
+        ],
+        [
+            KeyboardButton(text="⬅️ В главное меню"),
+        ],
+    ]
+    return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+
+
 def get_places_keyboard(data) -> InlineKeyboardMarkup:
     places = data.get("places", [])
 
@@ -67,6 +107,16 @@ def get_places_keyboard(data) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 
+def get_root_menu() -> ReplyKeyboardMarkup:
+    kb = [
+        [
+            KeyboardButton(text="📋 Места"),
+            KeyboardButton(text="🦁 Зоопарк"),
+        ],
+    ]
+    return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+
+
 def get_main_menu() -> ReplyKeyboardMarkup:
     kb = [
         [
@@ -76,6 +126,9 @@ def get_main_menu() -> ReplyKeyboardMarkup:
         [
             KeyboardButton(text="🔍 Непосещённые"),
             KeyboardButton(text="✨ Посещённые"),
+        ],
+        [
+            KeyboardButton(text="⬅️ В главное меню"),
         ],
     ]
     return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)

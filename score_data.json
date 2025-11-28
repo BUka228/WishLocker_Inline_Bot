@@ -6,5 +6,19 @@
     "dasha": {
         "score": 5,
         "wishes": 3
-    }
+    },
+    "places": [
+        {
+            "id": 1,
+            "title": "Трос",
+            "visited": false,
+            "author": "Никита"
+        },
+        {
+            "id": 2,
+            "title": "Ато",
+            "visited": false,
+            "author": "Никита"
+        }
+    ]
 }

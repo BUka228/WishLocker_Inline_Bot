@@ -22,3 +22,4 @@ venv/
 *.log
 project_dump.md
 score_data.json
+export_project_md.py
